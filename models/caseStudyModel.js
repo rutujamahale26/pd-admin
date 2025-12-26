@@ -1,0 +1,45 @@
+import mongoose from "mongoose";
+
+const caseStudySchema = new mongoose.Schema(
+  {
+    status: {
+      type: String,
+      enum: ["draft", "published"],
+      default: "draft", // 👈 SAVE DRAFT default
+    },
+
+    visible: {
+      type: Boolean,
+      default: false, // 👈 draft is not visible
+    },
+
+    title: String,
+    websiteUrl: String,
+    description: String,
+
+    project: {
+      name: String,
+      year: String,
+      clientName: String,
+      duration: String,
+    },
+
+    mainImage: String,
+
+    problem: {
+      text: String,
+      image: String,
+    },
+
+    solution: {
+      text: String,
+      image: String,
+    },
+
+    challenge: String,
+    summary: String,
+  },
+  { timestamps: true }
+);
+
+export  const CaseStudy= mongoose.model("CaseStudy", caseStudySchema)

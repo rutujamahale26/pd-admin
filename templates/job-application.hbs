@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{subject}}</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f8;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #333333;
+    }
+    .wrapper {
+      width: 100%;
+      padding: 30px 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .header {
+      background: linear-gradient(135deg, #2b0a70, #4c1d95);
+      padding: 20px;
+      text-align: center;
+      color: #ffffff;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+    .content {
+      padding: 24px;
+    }
+    .content p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 8px 0;
+    }
+    .label {
+      font-weight: bold;
+      color: #111827;
+    }
+    .divider {
+      margin: 20px 0;
+      border-top: 1px solid #e5e7eb;
+    }
+    .button {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 10px 18px;
+      background-color: #4c1d95;
+      color: #ffffff !important;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .footer {
+      background: #f9fafb;
+      padding: 14px;
+      text-align: center;
+      font-size: 12px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="container">
+
+      <!-- HEADER -->
+      <div class="header">
+        <h1>{{headerTitle}}</h1>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="content">
+
+        {{#if isHR}}
+          <!-- HR VIEW -->
+          <p>Hello Team,</p>
+          <p>A new job application has been submitted. Below are the details:</p>
+
+          <div class="divider"></div>
+
+          <p><span class="label">Candidate Name:</span> {{name}}</p>
+          <p><span class="label">Email:</span> {{email}}</p>
+          <p><span class="label">Phone:</span> {{phone}}</p>
+          <p><span class="label">Position Applied:</span> {{jobTitle}}</p>
+
+          {{#if company}}
+            <p><span class="label">Current Company:</span> {{company}}</p>
+          {{/if}}
+
+          {{#if portfolioLink}}
+            <p>
+              <span class="label">Portfolio:</span>
+              <a href="{{portfolioLink}}" target="_blank">{{portfolioLink}}</a>
+            </p>
+          {{/if}}
+
+          {{#if linkedinLink}}
+            <p>
+              <span class="label">LinkedIn:</span>
+              <a href="{{linkedinLink}}" target="_blank">{{linkedinLink}}</a>
+            </p>
+          {{/if}}
+
+          <p>
+            <span class="label">Resume:</span>
+            Resume is provide below.
+          </p>
+
+          <div class="divider"></div>
+
+          <p>Please review the application and proceed with the next steps.</p>
+
+        {{else}}
+          <!-- APPLICANT VIEW -->
+          <p>Hi {{name}},</p>
+
+          <p>
+            Thank you for applying for the
+            <strong>{{jobTitle}}</strong> position at our company.
+          </p>
+
+          <p>
+            We’ve successfully received your application. Our HR team will
+            review your profile and contact you if your experience aligns with
+            our requirements.
+          </p>
+
+          <p>
+            We appreciate your interest in joining our team and wish you the
+            best of luck.
+          </p>
+
+          <div class="divider"></div>
+
+          <p>Warm regards,<br /><strong>HR Team</strong></p>
+        {{/if}}
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="footer">
+        © {{year}} The Python Developers. All rights reserved.
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

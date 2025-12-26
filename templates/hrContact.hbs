@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      background: #ffffff;
+      margin: auto;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    h2 {
+      color: #0f172a;
+    }
+    p {
+      color: #334155;
+      line-height: 1.6;
+    }
+    .label {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📩 New Contact Form Submission</h2>
+
+    <p><span class="label">Name:</span> {{name}}</p>
+    <p><span class="label">Email:</span> {{email}}</p>
+    <p><span class="label">Company:</span> {{company}}</p>
+    <p><span class="label">Phone:</span> {{phone}}</p>
+
+    <p><span class="label">Message:</span></p>
+    <p>{{message}}</p>
+
+    <hr />
+    <small>This email was sent from the {{name}}.</small>
+  </div>
+</body>
+</html>
