@@ -1,4 +1,4 @@
-import { Services } from "../models/servicesModel.js";
+import { Services } from "../models/servicesPageModel.js";
 import { deleteFromCloudinary } from "../utils/cloudinaryHelper.js";
 
 /* ================= SAVE SERVICES ================= */
