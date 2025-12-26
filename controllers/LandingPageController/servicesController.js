@@ -1,4 +1,4 @@
-import Service from "../../models/LandingPageModels/ServicesModel.js";
+import Service from "../../models/LandingPageModels/servicesModel.js";
 
 /**
  * GET all services
