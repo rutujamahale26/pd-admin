@@ -31,7 +31,7 @@ const heroSectionSchema = new mongoose.Schema(
     },
     heroImage: {
       type: String, // Cloudinary URL
-      required: [true, "Hero image is required"],
+      // required: [true, "Hero image is required"],
     },
   },
   { timestamps: true }
