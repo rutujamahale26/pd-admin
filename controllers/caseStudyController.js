@@ -81,7 +81,7 @@ export const createCaseStudy = async (req, res) => {
 // get all case study
 export const getCaseStudies = async (req, res) => {
   try {
-    const caseStudies = await CaseStudy.find().sort({ createdAt: -1 });
+    const caseStudies = await CaseStudy.find().sort({ order: 1 , createdAt: -1 });
 
     res.status(200).json({
       success: true,
@@ -224,4 +224,26 @@ export const deleteCaseStudy = async (req, res) => {
     });
   }
 };
+
+// reorder
+export const reorderCaseStudies = async (req, res) => {
+  try {
+    const { order } = req.body;
+    // order = [{ id, position }]
+
+    const bulkOps = order.map((item) => ({
+      updateOne: {
+        filter: { _id: item.id },
+        update: { $set: { order: item.position } },
+      },
+    }));
+
+    await CaseStudy.bulkWrite(bulkOps);
+
+    res.json({ message: "Order updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to reorder case studies" });
+  }
+};
+
 

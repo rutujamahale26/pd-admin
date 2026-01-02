@@ -3,7 +3,7 @@ import Expertise from "../../models/LandingPageModels/ExpertiseModel.js";
 // GET all expertise items
 export const getExpertise = async (req, res) => {
   try {
-    const expertise = await Expertise.find().sort({ createdAt: -1 });
+    const expertise = await Expertise.find().sort({ order: 1 });
     res.status(200).json({
       success: true,
       count: expertise.length,
@@ -140,3 +140,31 @@ export const deleteExpertise = async (req, res) => {
     });
   }
 };
+
+// reorder api
+export const reorderExpertise = async (req, res) => {
+  try {
+    const { orders } = req.body;
+    // orders = [{ id, order }]
+
+    const bulkOps = orders.map((item) => ({
+      updateOne: {
+        filter: { _id: item.id },
+        update: { order: item.order },
+      },
+    }));
+
+    await Expertise.bulkWrite(bulkOps);
+
+    res.status(200).json({
+      success: true,
+      message: "Order updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to reorder expertise",
+    });
+  }
+};
+

@@ -5,6 +5,7 @@ import {
   createExpertise,
   updateExpertise,
   deleteExpertise,
+  reorderExpertise,
 } from "../../controllers/LandingPageController/expertiseController.js";
 
 const router = express.Router();
@@ -32,5 +33,8 @@ router.put("/update/:id", (req, res, next) => {
 
 // DELETE expertise
 router.delete("/delete/:id", deleteExpertise);
+
+// reorder api
+router.put("/reorder", reorderExpertise);
 
 export default router;

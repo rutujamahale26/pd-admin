@@ -5,6 +5,7 @@ import {
   createIndustry,
   updateIndustry,
   deleteIndustry,
+  reorderIndustries,
 } from "../../controllers/LandingPageController/industryController.js";
 
 const router = express.Router();
@@ -32,5 +33,9 @@ router.put( "/update/:id", (req, res, next) => {
 
 // DELETE industry
 router.delete("/delete/:id", deleteIndustry);
+
+// order
+router.put("/reorder", reorderIndustries);
+
 
 export default router;

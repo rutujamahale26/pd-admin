@@ -132,9 +132,8 @@ export const saveServices = async (req, res) => {
 export const getServicesAdmin = async (req, res) => {
   const services = await Services.findOne();
   res.json({
-    success:false,
+    success:true,
     message:"Services fetched successfully",
-    count:services.length,
     data:services
   });
 };
@@ -148,7 +147,6 @@ export const getServicesWebsite = async (req, res) => {
   res.json({
     success: true,
     message:"Services fetched successfully",
-    count:services.length,
     data:services,
   });
 };

@@ -1,6 +1,6 @@
 import express from 'express';
 import upload from '../middleware/uploadMiddleware.js';
-import {createCaseStudy, deleteCaseStudy, getCaseStudies, getCaseStudyById, updateCaseStudy} from '../controllers/caseStudyController.js'
+import {createCaseStudy, deleteCaseStudy, getCaseStudies, getCaseStudyById, reorderCaseStudies, updateCaseStudy} from '../controllers/caseStudyController.js'
 
 const router = express.Router();
 
@@ -30,5 +30,6 @@ router.put(
 
 router.delete("/detete/:id", deleteCaseStudy);
 
+router.put("/reorder", reorderCaseStudies);
 
 export default router;

@@ -13,6 +13,11 @@ const caseStudySchema = new mongoose.Schema(
       default: false, // 👈 draft is not visible
     },
 
+    order: {
+      type: Number,
+      default: 0,
+    },
+
     title: String,
     websiteUrl: String,
     description: String,

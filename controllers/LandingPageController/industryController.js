@@ -3,7 +3,7 @@ import Industry from "../../models/LandingPageModels/IndustriesModel.js";
 // GET all industries
 export const getIndustries = async (req, res) => {
   try {
-    const industries = await Industry.find().sort({ createdAt: -1 });
+    const industries = await Industry.find().sort({ order: 1 });
     res.status(200).json({
       success: true,
       count:industries.length,
@@ -53,11 +53,14 @@ export const createIndustry = async (req, res) => {
       });
     }
 
+    const count = await Industry.countDocuments();
+    
     const industry = await Industry.create({
       title: title.trim(),
       description: description.trim(),
       image,
       isVisible: isVisible ?? true,
+      order: count, 
     });
 
     res.status(201).json({
@@ -140,3 +143,31 @@ export const deleteIndustry = async (req, res) => {
     });
   }
 };
+
+// industries reorder
+export const reorderIndustries = async (req, res) => {
+  try {
+    const { order } = req.body;
+    // order = [{ id, order }]
+
+    const bulkOps = order.map((item) => ({
+      updateOne: {
+        filter: { _id: item.id },
+        update: { order: item.order },
+      },
+    }));
+
+    await Industry.bulkWrite(bulkOps);
+
+    res.status(200).json({
+      success: true,
+      message: "Industries reordered successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to reorder industries",
+    });
+  }
+};
+
