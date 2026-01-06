@@ -9,11 +9,20 @@ import {
 
 const router = express.Router();
 
-router.get("/get", upload.any(), getAboutUs);
+// router.get("/get", upload.any(), getAboutUs);
+router.get("/get", getAboutUs);
 
+// router.post(
+//   "/save",
+//   upload.fields([{ name: "heroImage", maxCount: 1 }]),
+//   saveAboutUs
+// );
 router.post(
   "/save",
-  upload.fields([{ name: "heroImage", maxCount: 1 }]),
+  (req, res, next) => {
+    req.uploadFolder = "about-us";
+    upload.any()(req, res, next);
+  },
   saveAboutUs
 );
 

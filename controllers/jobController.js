@@ -4,7 +4,14 @@ import Job from "../models/JobModel.js";
 export const getJobs = async (req, res) => {
   try {
     const jobs = await Job.find({ isActive: true }).sort({ createdAt: -1 });
-    res.status(200).json({ success: true, message:"All active Jobs fetched successfully", count:jobs.length, data: jobs });
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "All active Jobs fetched successfully",
+        count: jobs.length,
+        data: jobs,
+      });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -14,7 +21,14 @@ export const getJobs = async (req, res) => {
 export const getAllJobs = async (req, res) => {
   try {
     const jobs = await Job.find().sort({ createdAt: -1 });
-    res.status(200).json({ success: true, message:"Jobs fetched successfully", count:jobs.length, data: jobs });
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Jobs fetched successfully",
+        count: jobs.length,
+        data: jobs,
+      });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -22,63 +36,71 @@ export const getAllJobs = async (req, res) => {
 
 // ADMIN – Create job
 export const createJob = async (req, res) => {
+  
   try {
+    console.log("📥 CREATE JOB BODY:", req.body);
     const {
+      status = "draft",
       title,
       subTitle,
       description,
-      category,
       jobType,
-      workMode,
-      experience,
       location,
       payment,
+      isActive = true,
     } = req.body;
 
-    // 🔐 Field-wise validation
+    // Validation
     if (!title)
-      return res.status(400).json({ field: "title", message: "Job title is required" });
+      return res
+        .status(400)
+        .json({ field: "title", message: "Job title is required" });
 
     if (!subTitle)
-      return res.status(400).json({ field: "subTitle", message: "Job sub-title is required" });
-
+      return res
+        .status(400)
+        .json({ field: "subTitle", message: "Job sub-title is required" });
 
     if (!description)
-      return res.status(400).json({ field: "description", message: "Description is required" });
-
-    if (!category)
-      return res.status(400).json({ field: "category", message: "Category is required" });
+      return res
+        .status(400)
+        .json({ field: "description", message: "Description is required" });
 
     if (!jobType)
-      return res.status(400).json({ field: "jobType", message: "Job type is required" });
-
-    if (!workMode)
-      return res.status(400).json({ field: "workMode", message: "Work mode is required" });
-
-    if (!experience)
-      return res.status(400).json({ field: "experience", message: "Experience is required" });
+      return res
+        .status(400)
+        .json({ field: "jobType", message: "Job type is required" });
 
     if (!payment)
-      return res.status(400).json({ field: "payment", message: "Payment is required" });
-
+      return res
+        .status(400)
+        .json({ field: "payment", message: "Payment is required" });
 
     const job = await Job.create({
       title: title.trim(),
+      subTitle: subTitle.trim(),
       description: description.trim(),
-      category: category.trim(),
-      jobType,
-      workMode,
-      experience: experience.trim(),
+      jobType: jobType.trim(),
       location: location?.trim(),
+      payment: payment.trim(),
+      isActive: status === "published",
+      status,
     });
 
     res.status(201).json({
       success: true,
-      message: "Job created successfully",
+      message:
+        status === "draft"
+          ? "Job draft saved successfully"
+          : "Job published successfully",
       data: job,
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error("JOB CREATE ERROR:", error);
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
@@ -130,7 +152,9 @@ export const toggleJobStatus = async (req, res) => {
 export const deleteJob = async (req, res) => {
   try {
     await Job.findByIdAndDelete(req.params.id);
-    res.status(200).json({ success: true, message: "Job deleted successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Job deleted successfully" });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

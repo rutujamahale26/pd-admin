@@ -4,7 +4,7 @@ import { deleteFromCloudinary } from "../utils/cloudinaryHelper.js";
 // CREATE / UPDATE PORTFOLIO (Single document)
 export const savePortfolio = async (req, res) => {
   try {
-    const { title, subtitle, categories } = req.body;
+    const { title, subtitle, cta1, cta2, categories } = req.body;
 
     /* ================= INLINE VALIDATION ================= */
     if (!title) {
@@ -13,6 +13,14 @@ export const savePortfolio = async (req, res) => {
 
     if (!subtitle) {
       return res.status(400).json({ message: "Subtitle is required" });
+    }
+
+    if (cta1 && typeof cta1 !== "string") {
+      return res.status(400).json({ message: "CTA1 must be text" });
+    }
+
+    if (cta2 && typeof cta2 !== "string") {
+      return res.status(400).json({ message: "CTA2 must be text" });
     }
 
     let parsedCategories = [];
@@ -65,6 +73,16 @@ export const savePortfolio = async (req, res) => {
     const payload = {
       title,
       subtitle,
+      cta1:
+        typeof cta1 === "string" && cta1.trim() !== ""
+          ? cta1
+          : portfolio?.cta1 ?? "",
+
+      cta2:
+        typeof cta2 === "string" && cta2.trim() !== ""
+          ? cta2
+          : portfolio?.cta2 ?? "",
+
       mainImage,
       categories: parsedCategories,
     };
@@ -95,6 +113,7 @@ export const savePortfolio = async (req, res) => {
 export const getPortfolio = async (req, res) => {
   try {
     const portfolio = await Portfolio.findOne();
+
     res.status(200).json({
       success: true,
       data: portfolio,

@@ -4,7 +4,7 @@ const careerPageSchema = new mongoose.Schema(
   {
     /* ================= HERO SECTION ================= */
     hero: {
-      bannerTitle: {
+      btnText: {
         type: String,
         required: true,
         trim: true,

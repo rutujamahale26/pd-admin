@@ -61,11 +61,22 @@ import { deleteFromCloudinary } from "../utils/cloudinaryHelper.js";
 // };
 export const saveAboutUs = async (req, res) => {
   try {
+    console.log("➡️ saveAboutUs called");
+    console.log("Files received:", Object.keys(req.files || {}));
+
+     // 🔥 ADD THIS BLOCK
+    const filesMap = {};
+    (req.files || []).forEach((file) => {
+      filesMap[file.fieldname] = file;
+    });
+
+    console.log("Mapped files:", Object.keys(filesMap));
+
     let aboutUs = await AboutUs.findOne();
 
     /* ---------------- HERO IMAGE ---------------- */
     let heroImage = aboutUs?.hero?.image || {};
-    const heroFile = req.files?.heroImage?.[0];
+    const heroFile = filesMap["heroImage"];
 
     if (heroFile) {
       if (heroImage.public_id) {
@@ -84,7 +95,7 @@ export const saveAboutUs = async (req, res) => {
       : aboutUs?.vision || [];
 
     for (let i = 0; i < vision.length; i++) {
-      const file = req.files?.[`visionImage_${i}`]?.[0];
+      const file = filesMap[`visionImage_${i}`];
 
       if (file) {
         if (vision[i]?.image?.public_id) {
@@ -104,7 +115,7 @@ export const saveAboutUs = async (req, res) => {
       : aboutUs?.coreValues || [];
 
     for (let i = 0; i < coreValues.length; i++) {
-      const file = req.files?.[`coreImage_${i}`]?.[0];
+      const file = filesMap[`coreImage_${i}`];
 
       if (file) {
         if (coreValues[i]?.image?.public_id) {
@@ -124,7 +135,7 @@ export const saveAboutUs = async (req, res) => {
       : aboutUs?.leadershipTeam || [];
 
     for (let i = 0; i < leadershipTeam.length; i++) {
-      const file = req.files?.[`teamImage_${i}`]?.[0];
+      const file = filesMap[`teamImage_${i}`];;
 
       if (file) {
         if (leadershipTeam[i]?.image?.public_id) {
@@ -191,7 +202,21 @@ export const getAboutUs = async (req, res) => {
 //   ADD JOURNEY ITEM
 export const addJourney = async (req, res) => {
   try {
-    const { title, year, description } = req.body;
+    const { title, year } = req.body;
+
+    if (!title || !year) {
+      return res.status(400).json({
+        success: false,
+        message: "Title and year are required",
+      });
+    }
+
+    if (!/^\d{4}$/.test(year)) {
+      return res.status(400).json({
+        success: false,
+        message: "Year must be a valid 4-digit year",
+      });
+    }
 
     const aboutUs = await AboutUs.findOne();
     if (!aboutUs) {
@@ -201,7 +226,7 @@ export const addJourney = async (req, res) => {
       });
     }
 
-    aboutUs.journey.push({ title, year, description });
+    aboutUs.journey.push({ title, year });
     await aboutUs.save();
 
     res.status(200).json({

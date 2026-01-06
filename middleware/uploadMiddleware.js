@@ -6,7 +6,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: (req, file) => ({
     folder: req.uploadFolder || "case-studies", // 👈 default stays same
-    // resource_type: "auto", // ✅ THIS IS THE KEY
+    resource_type: "auto", // ✅ THIS IS THE KEY
     allowed_formats: ["jpg", "jpeg", "png", "webp", "svg"],
   }),
 });

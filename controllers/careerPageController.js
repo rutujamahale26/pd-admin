@@ -6,8 +6,8 @@ export const saveCareerPage = async (req, res) => {
   try {
     const { hero, categories, faqs } = req.body;
     /* ===== HERO VALIDATION ===== */
-    if (!hero?.bannerTitle)
-      return res.status(400).json({ field: "bannerTitle", message: "Banner title is required" });
+    if (!hero?. btnText)
+      return res.status(400).json({ field: " btnText", message: "Button text is required" });
 
     if (!hero?.title)
       return res.status(400).json({ field: "title", message: "Hero title is required" });

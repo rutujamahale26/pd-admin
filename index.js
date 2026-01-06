@@ -53,9 +53,12 @@ const corsOptions = {
 // Apply CORS to all routes first
 app.use(cors(corsOptions));
 
+// 🚨 File-upload routes FIRST
+app.use("/api/about-us", aboutUsRoutes);
+
 // middleware
 app.use(express.json());
-express.urlencoded();
+app.use(express.urlencoded({ extended: true }));
 
 // db connection
 connectDB()
@@ -68,7 +71,7 @@ app.get("/", (req, res) => {
 // routes
 app.use("/api/admin", adminRoutes);
 app.use("/api/case-study", caseStudyRoutes);
-app.use("/api/about-us", aboutUsRoutes);
+// app.use("/api/about-us", aboutUsRoutes);
 app.use("/api/subscribe", subscriberRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/home", HeroSectionRoutes)

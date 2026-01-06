@@ -15,6 +15,18 @@ const portfolioSchema = new mongoose.Schema(
       trim: true,
     },
 
+    cta1: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+
+    cta2: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+
     /* ================= MAIN IMAGE ================= */
     mainImage: {
       url: { type: String },

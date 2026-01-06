@@ -5,25 +5,21 @@ const jobSchema = new mongoose.Schema(
     title: {
       type: String,
       required: [true, "Job title is required"],
-      minlength: 3,
-      maxlength: 1000,
     },
 
     subTitle: {
       type: String,
-      maxlength: 200,
+       required: [true, "Job sub-title is required"],
     },
 
     description: {
       type: String,
       required: [true, "Job description is required"],
-      minlength: 20,
     },
 
-    category: {
-      type: String,
-      required: [true, "Category is required"],
-    },
+    // category: {
+    //   type: String,
+    // },
 
     jobType: {
       type: String,
@@ -32,13 +28,11 @@ const jobSchema = new mongoose.Schema(
 
     workMode: {
       type: String,
-      required: true,
     },
 
-    experience: {
-      type: String,
-      required: [true, "Experience is required"], // e.g. "0–2 years"
-    },
+    // experience: {
+    //   type: String,
+    // },
 
     location: {
       type: String,
@@ -53,6 +47,12 @@ const jobSchema = new mongoose.Schema(
       type: Boolean,
       default: true, // only active jobs visible on website
     },
+    status: {
+  type: String,
+  enum: ["draft", "published"],
+  default: "draft",
+}
+
   },
   { timestamps: true }
 );
