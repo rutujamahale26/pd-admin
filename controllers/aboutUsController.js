@@ -162,9 +162,7 @@ export const saveAboutUs = async (req, res) => {
 
       if (file) {
         if (aboutUs?.vision?.[i]?.image?.public_id) {
-          await deleteFromCloudinary(
-            aboutUs.vision[i].image.public_id
-          );
+          await deleteFromCloudinary(aboutUs.vision[i].image.public_id);
         }
 
         vision[i].image = {
@@ -188,9 +186,7 @@ export const saveAboutUs = async (req, res) => {
 
       if (file) {
         if (aboutUs?.coreValues?.[i]?.image?.public_id) {
-          await deleteFromCloudinary(
-            aboutUs.coreValues[i].image.public_id
-          );
+          await deleteFromCloudinary(aboutUs.coreValues[i].image.public_id);
         }
 
         coreValues[i].image = {
@@ -214,9 +210,7 @@ export const saveAboutUs = async (req, res) => {
 
       if (file) {
         if (aboutUs?.leadershipTeam?.[i]?.image?.public_id) {
-          await deleteFromCloudinary(
-            aboutUs.leadershipTeam[i].image.public_id
-          );
+          await deleteFromCloudinary(aboutUs.leadershipTeam[i].image.public_id);
         }
 
         leadershipTeam[i].image = {
@@ -230,6 +224,11 @@ export const saveAboutUs = async (req, res) => {
       }
     }
 
+    /* ---------------- JOURNEY ---------------- */
+    let journey = req.body.journey
+      ? JSON.parse(req.body.journey)
+      : aboutUs?.journey || [];
+
     /* ================= FINAL PAYLOAD ================= */
     const payload = {
       hero: {
@@ -241,10 +240,9 @@ export const saveAboutUs = async (req, res) => {
       },
       vision,
       coreValues,
+      journey,
       leadershipTeam,
-      stats: req.body.stats
-        ? JSON.parse(req.body.stats)
-        : aboutUs?.stats || {},
+      stats: req.body.stats ? JSON.parse(req.body.stats) : aboutUs?.stats || {},
     };
 
     /* ================= SAVE ================= */
@@ -265,7 +263,6 @@ export const saveAboutUs = async (req, res) => {
     });
   }
 };
-
 
 //   GET ABOUT US
 export const getAboutUs = async (req, res) => {
