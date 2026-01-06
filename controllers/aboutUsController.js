@@ -225,9 +225,25 @@ export const saveAboutUs = async (req, res) => {
     }
 
     /* ---------------- JOURNEY ---------------- */
-    let journey = req.body.journey
-      ? JSON.parse(req.body.journey)
-      : aboutUs?.journey || [];
+    let journey = aboutUs?.journey || [];
+
+    if (req.body.journey) {
+      try {
+        journey = JSON.parse(req.body.journey);
+
+        if (!Array.isArray(journey)) {
+          return res.status(400).json({
+            success: false,
+            message: "Journey must be an array",
+          });
+        }
+      } catch (e) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid journey JSON",
+        });
+      }
+    }
 
     /* ================= FINAL PAYLOAD ================= */
     const payload = {
