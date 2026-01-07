@@ -1,4 +1,5 @@
-import HeroSection from '../../models/LandingPageModels/HeroSectionModel.js'
+import HeroSection from "../../models/LandingPageModels/HeroSectionModel.js";
+import { deleteFromCloudinary } from "../../utils/cloudinaryHelper.js";
 
 //  GET Hero Section
 export const getHeroSection = async (req, res) => {
@@ -16,7 +17,6 @@ export const getHeroSection = async (req, res) => {
     });
   }
 };
-
 
 // CREATE / UPDATE Hero Section (Single record)
 // export const upsertHeroSection = async (req, res) => {
@@ -106,17 +106,16 @@ export const upsertHeroSection = async (req, res) => {
     let heroImage = existingHero?.heroImage;
 
     // if new image uploaded, replace it
+
+    // 🔥 if new image uploaded
     if (req.file) {
+      // delete old image from cloudinary
+      if (existingHero?.heroImage) {
+        await deleteFromCloudinary(existingHero.heroImage);
+      }
+
       heroImage = req.file.path;
     }
-
-    // image required only if creating for first time
-    // if (!heroImage) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "Hero image is required",
-    //   });
-    // }
 
     let hero;
 
@@ -125,7 +124,7 @@ export const upsertHeroSection = async (req, res) => {
       existingHero.mainTitle = mainTitle.trim();
       existingHero.description = description.trim();
       existingHero.ctaText = ctaText.trim();
-      // existingHero.heroImage = heroImage;
+      existingHero.heroImage = heroImage;
 
       hero = await existingHero.save();
     } else {
@@ -151,4 +150,3 @@ export const upsertHeroSection = async (req, res) => {
     });
   }
 };
-
