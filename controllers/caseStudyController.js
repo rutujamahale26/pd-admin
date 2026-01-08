@@ -1,5 +1,5 @@
 import { CaseStudy } from "../models/caseStudyModel.js";
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 // create case study
 export const createCaseStudy = async (req, res) => {
@@ -7,6 +7,7 @@ export const createCaseStudy = async (req, res) => {
     const {
       status = "draft",
       title,
+      category,
       websiteUrl,
       description,
       projectName,
@@ -33,6 +34,7 @@ export const createCaseStudy = async (req, res) => {
       visible: isPublished,
 
       title,
+      category,
       websiteUrl,
       description,
 
@@ -81,7 +83,10 @@ export const createCaseStudy = async (req, res) => {
 // get all case study
 export const getCaseStudies = async (req, res) => {
   try {
-    const caseStudies = await CaseStudy.find().sort({ order: 1 , createdAt: -1 });
+    const caseStudies = await CaseStudy.find().sort({
+      order: 1,
+      createdAt: -1,
+    });
 
     res.status(200).json({
       success: true,
@@ -97,7 +102,6 @@ export const getCaseStudies = async (req, res) => {
     });
   }
 };
-
 
 // get single case study
 export const getCaseStudyById = async (req, res) => {
@@ -133,7 +137,6 @@ export const getCaseStudyById = async (req, res) => {
     });
   }
 };
-
 
 // update case study
 export const updateCaseStudy = async (req, res) => {
@@ -171,8 +174,7 @@ export const updateCaseStudy = async (req, res) => {
     if (updates.summary) caseStudy.summary = updates.summary;
 
     // Images (optional)
-    if (req.files?.mainImage)
-      caseStudy.mainImage = req.files.mainImage[0].path;
+    if (req.files?.mainImage) caseStudy.mainImage = req.files.mainImage[0].path;
 
     if (req.files?.problemImage)
       caseStudy.problem.image = req.files.problemImage[0].path;
@@ -195,7 +197,6 @@ export const updateCaseStudy = async (req, res) => {
     });
   }
 };
-
 
 // delete case study
 export const deleteCaseStudy = async (req, res) => {
@@ -246,4 +247,49 @@ export const reorderCaseStudies = async (req, res) => {
   }
 };
 
+/* ================= WEBSITE: CASE STUDY LIST ================= */
+export const getCaseStudiesForWebsite = async (req, res) => {
+  try {
+    const { category, year, client } = req.query;
 
+    const filter = {
+      status: "published",
+      visible: true,
+    };
+
+    // Category filter (flexible, case-insensitive)
+    if (category && category !== "all") {
+      filter.category = { $regex: `^${category}$`, $options: "i" };
+    }
+
+    // Optional filters
+    if (year) {
+      filter["project.year"] = year;
+    }
+
+    if (client) {
+      filter["project.clientName"] = {
+        $regex: `^${client}$`,
+        $options: "i",
+      };
+    }
+
+    const caseStudies = await CaseStudy.find(filter)
+      .select(
+        "title category websiteUrl description mainImage project order createdAt"
+      )
+      .sort({ order: 1, createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: caseStudies.length,
+      data: caseStudies,
+    });
+  } catch (error) {
+    console.error("Website case study error:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch case studies",
+    });
+  }
+};

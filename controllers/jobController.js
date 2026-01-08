@@ -42,6 +42,7 @@ export const createJob = async (req, res) => {
     const {
       status = "draft",
       title,
+      category,
       subTitle,
       description,
       jobType,
@@ -78,6 +79,7 @@ export const createJob = async (req, res) => {
 
     const job = await Job.create({
       title: title.trim(),
+      category: category.trim(),
       subTitle: subTitle.trim(),
       description: description.trim(),
       jobType: jobType.trim(),

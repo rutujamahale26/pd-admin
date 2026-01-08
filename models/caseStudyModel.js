@@ -22,6 +22,10 @@ const caseStudySchema = new mongoose.Schema(
     websiteUrl: String,
     description: String,
 
+    category: {
+      type: String, // ✅ flexible category
+      trim: true, // ❌ no enum
+    },
     project: {
       name: String,
       year: String,
@@ -47,4 +51,4 @@ const caseStudySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export  const CaseStudy= mongoose.model("CaseStudy", caseStudySchema)
+export const CaseStudy = mongoose.model("CaseStudy", caseStudySchema);

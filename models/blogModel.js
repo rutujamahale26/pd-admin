@@ -7,11 +7,15 @@ const imageSchema = new mongoose.Schema({
 
 const blogSchema = new mongoose.Schema(
   {
-    author: { type: String,  },
+    author: { type: String },
     date: { type: Date },
-    title: { type: String, },
+    title: { type: String },
     category: { type: String },
     readTime: { type: Number },
+    views: {
+      type: Number,
+      default: 0,
+    },
 
     description1: { type: String },
     description2: { type: String },

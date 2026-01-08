@@ -12,7 +12,7 @@ const expertiseSchema = new mongoose.Schema(
     description: {
       type: String,
       required: [true, "Description is required"],
-      minlength: 10,
+      minlength: 3,
       maxlength: 500,
     },
     image: {

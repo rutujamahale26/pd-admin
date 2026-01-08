@@ -7,6 +7,11 @@ const jobSchema = new mongoose.Schema(
       required: [true, "Job title is required"],
     },
 
+    category: {
+      type: String,
+      required: true, // 🔥 THIS enables strong filtering
+    },
+
     subTitle: {
       type: String,
        required: [true, "Job sub-title is required"],

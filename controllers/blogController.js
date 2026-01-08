@@ -23,17 +23,27 @@ export const createBlog = async (req, res) => {
 
     /* 🔴 VALIDATION ONLY IF PUBLISH */
     if (blogStatus === "published") {
-      if (!author) return res.status(400).json({ message: "Author is required" });
+      if (!author)
+        return res.status(400).json({ message: "Author is required" });
       if (!date) return res.status(400).json({ message: "Date is required" });
       if (!title || title.length < 5)
-        return res.status(400).json({ message: "Title must be at least 5 characters" });
-      if (!category) return res.status(400).json({ message: "Category is required" });
+        return res
+          .status(400)
+          .json({ message: "Title must be at least 5 characters" });
+      if (!category)
+        return res.status(400).json({ message: "Category is required" });
       if (!readTime || readTime < 1)
-        return res.status(400).json({ message: "Read time must be at least 1 minute" });
+        return res
+          .status(400)
+          .json({ message: "Read time must be at least 1 minute" });
       if (!description1 || description1.length < 20)
-        return res.status(400).json({ message: "Description must be at least 20 characters" });
+        return res
+          .status(400)
+          .json({ message: "Description must be at least 20 characters" });
       if (!image1)
-        return res.status(400).json({ message: "Main image is required to publish blog" });
+        return res
+          .status(400)
+          .json({ message: "Main image is required to publish blog" });
     }
 
     const blog = await Blog.create({
@@ -77,24 +87,28 @@ export const getBlogs = async (req, res) => {
   const blogs = await Blog.find(filter).sort({ createdAt: -1 });
 
   res.json({
-    success:true,
-    message:"Blog fetched successfully",
+    success: true,
+    message: "Blog fetched successfully",
     count: blogs.length,
-    data:blogs
+    data: blogs,
   });
 };
 
 /* ================= GET SINGLE BLOG ================= */
 export const getBlogById = async (req, res) => {
-  const blog = await Blog.findById(req.params.id);
+  const blog = await Blog.findByIdAndUpdate(
+    req.params.id,
+    { $inc: { views: 1 } },
+    { new: true }
+  );
   if (!blog) {
     return res.status(404).json({ message: "Blog not found" });
   }
   res.json({
-    success:true,
-    message:"Blog fetched successfully",
+    success: true,
+    message: "Blog fetched successfully",
     // count: blog.length,
-    data:blog
+    data: blog,
   });
 };
 
@@ -162,7 +176,6 @@ export const deleteBlog = async (req, res) => {
   });
 };
 
-
 /* ================= WEBSITE: GET ACTIVE BLOGS ================= */
 export const getActiveBlogsForWebsite = async (req, res) => {
   try {
@@ -171,13 +184,13 @@ export const getActiveBlogsForWebsite = async (req, res) => {
       isVisible: true,
     })
       .select(
-        "title category author date readTime image1 description1 createdAt description2 image2"
+        "title category author date readTime views image1 description1 createdAt description2 image2"
       )
       .sort({ createdAt: -1 });
 
     res.json({
       success: true,
-      message:"Blogs fetched successfuly",
+      message: "Blogs fetched successfuly",
       count: blogs.length,
       blogs,
     });
