@@ -277,7 +277,7 @@ export const getCaseStudiesForWebsite = async (req, res) => {
 
     const caseStudies = await CaseStudy.find(filter)
       .select(
-        "title category websiteUrl description mainImage project order createdAt"
+        "title category description websiteUrl challenge summary project soluthion mainImage createdAt"
       )
       .sort({ order: 1, createdAt: -1 });
 
