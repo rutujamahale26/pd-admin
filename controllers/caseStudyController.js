@@ -159,6 +159,7 @@ export const updateCaseStudy = async (req, res) => {
     }
 
     if (updates.title) caseStudy.title = updates.title;
+    if(updates.category) caseStudy.category = updates.category;
     if (updates.websiteUrl) caseStudy.websiteUrl = updates.websiteUrl;
     if (updates.description) caseStudy.description = updates.description;
 
