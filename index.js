@@ -31,6 +31,7 @@ const PORT = process.env.PORT || 4000;
 const allowedOrigins = [
   "http://localhost:5173",
   "https://python-developers.netlify.app",
+  "https://thepytondevelopers.netlify.app",
   "https://py-admin.netlify.app"
 ]
 
